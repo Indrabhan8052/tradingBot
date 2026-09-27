@@ -1,0 +1,440 @@
+/* ===========================================================
+   RGV Dashboard — design tokens
+   A dark trading-terminal aesthetic: deep ink base, one warm
+   brand accent used sparingly, and functional green/red signal
+   colors reserved strictly for buy/sell state (never decorative).
+   =========================================================== */
+
+:root {
+  /* ink scale */
+  --ink-900: #0a0e14;
+  --ink-800: #10151d;
+  --ink-700: #161d28;
+  --ink-600: #1e2733;
+  --line: #29323f;
+  --line-soft: #1c2430;
+
+  /* text */
+  --text-hi: #edf1f7;
+  --text-mid: #aab3c2;
+  --text-lo: #6c7688;
+
+  /* brand accent — used only for the mark, primary action, and focus */
+  --amber: #e5a13c;
+  --amber-dim: #6b5228;
+
+  /* signal colors — functional only, never decorative */
+  --buy: #35c98c;
+  --buy-dim: #163829;
+  --sell: #ef5d6f;
+  --sell-dim: #3a1d24;
+
+  /* type */
+  --font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius: 6px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--ink-900);
+  background-image:
+    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(229, 161, 60, 0.06), transparent),
+    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(53, 201, 140, 0.04), transparent);
+  color: var(--text-hi);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--amber-dim);
+  color: var(--text-hi);
+}
+
+button {
+  font-family: inherit;
+}
+
+a {
+  color: var(--amber);
+}
+
+/* scrollbars, kept quiet */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* focus visibility, kept even though the palette is dark */
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---------- shared primitives ---------- */
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.panel {
+  background: var(--ink-800);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.panel-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-mid);
+  margin: 0;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--line);
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.dot--live {
+  background: var(--buy);
+  box-shadow: 0 0 0 0 rgba(53, 201, 140, 0.6);
+  animation: breathe 2s ease-in-out infinite;
+}
+
+.dot--off {
+  background: var(--text-lo);
+}
+
+@keyframes breathe {
+  0% {
+    box-shadow: 0 0 0 0 rgba(53, 201, 140, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(53, 201, 140, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(53, 201, 140, 0);
+  }
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--ink-700);
+  color: var(--text-hi);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--text-lo);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn--start {
+  background: var(--buy-dim);
+  border-color: rgba(53, 201, 140, 0.35);
+  color: var(--buy);
+}
+
+.btn--start:hover:not(:disabled) {
+  border-color: var(--buy);
+}
+
+.btn--stop {
+  background: var(--sell-dim);
+  border-color: rgba(239, 93, 111, 0.35);
+  color: var(--sell);
+}
+
+.btn--stop:hover:not(:disabled) {
+  border-color: var(--sell);
+}
+
+.input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--ink-700);
+  color: var(--text-hi);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.input:focus {
+  border-color: var(--amber);
+}
+
+.risk-bar-track {
+  width: 100%;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--ink-600);
+  overflow: hidden;
+}
+
+.risk-bar-track--sm {
+  height: 5px;
+  margin-top: 5px;
+}
+
+.risk-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease, background 0.3s ease;
+}
+
+.stat-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.04), transparent 60%);
+  pointer-events: none;
+}
+
+/* ---------- risk management navbar ---------- */
+
+.risk-navbar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
+    var(--ink-800);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02) inset;
+}
+
+.risk-navbar--halted {
+  border-color: rgba(239, 93, 111, 0.45);
+  background:
+    linear-gradient(180deg, rgba(239, 93, 111, 0.07), transparent),
+    var(--ink-800);
+}
+
+.risk-navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-hi);
+  letter-spacing: -0.01em;
+  flex: none;
+  padding-right: 4px;
+}
+
+.risk-navbar-scroll {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.risk-navbar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.risk-navbar-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--line-soft);
+  flex: none;
+}
+
+.risk-nav-segment {
+  flex: none;
+  white-space: nowrap;
+}
+
+.risk-nav-label {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-lo);
+  margin-bottom: 3px;
+}
+
+.risk-nav-value {
+  font-size: 13px;
+  min-width: 120px;
+}
+
+.risk-navbar-cta {
+  flex: none;
+  padding: 8px 14px;
+  font-size: 12.5px;
+}
+
+@media (max-width: 720px) {
+  .risk-navbar {
+    align-items: flex-start;
+  }
+}
+
+/* ---------- price chart panel ---------- */
+
+.chart-panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 14px 18px 0;
+}
+
+.chart-price-now {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.chart-price-delta {
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+/* ---------- modal ---------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 8, 12, 0.6);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8vh 16px 16px;
+  z-index: 100;
+}
+
+.modal-panel {
+  width: 100%;
+  max-width: 440px;
+  max-height: 82vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--ink-800);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--ink-700);
+  color: var(--text-hi);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.icon-btn:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--text-lo);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.modal-close:hover {
+  color: var(--text-hi);
+  background: var(--ink-600);
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
